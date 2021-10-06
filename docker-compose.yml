@@ -1,0 +1,40 @@
+version: '3.9'
+
+services:
+  temperature-aggregator:
+    container_name: temperature-aggregator
+    image: handofgod/temperature-aggregator:0.0.2-release
+    ports:
+      - "8091:8091"
+    networks:
+      - temperature-aggregator
+    restart: always
+    depends_on:
+      - influxdb
+    environment:
+      INFLUX_HOSTNAME: influxdb
+      INFLUX_PORT: 8086
+      INFLUX_BUCKET_NAME: temperature-bucket
+      INFLUX_USER_NAME: admin
+      #This is a sensitive information and needs to be moved to secrets in real environments
+      INFLUX_USER_PASSWORD: passw0rd
+
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    restart: always
+    ports:
+      - "8086:8086"
+    networks:
+      - temperature-aggregator
+    environment:
+      INFLUXDB_ADMIN_USER: admin
+      INFLUXDB_ADMIN_PASSWORD: passw0rd
+      DOCKER_INFLUXDB_INIT_BUCKET: temperature-bucket
+      DOCKER_INFLUXDB_INIT_RETENTION: 2d
+    volumes:
+      - $HOME/docker/influxdb/data:/var/lib/influxdb
+
+networks:
+  temperature-aggregator:
+    name: temperature-aggregator_network
