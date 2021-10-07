@@ -26,6 +26,9 @@
          -v influxdb:/var/lib/influxdb \
          influxdb`
       2. Or Please follow this [link] to download and install influxdb on host machine.(https://docs.influxdata.com/influxdb/v2.0/install/)
+      3. If docker desktop is not installed , then the application can also be run locally:
+         * Open terminal/cmd and navigate to the project folder stored locally.
+         * Once done please execute : ./mvnw spring-boot:run
 3. Once above steps are done , then please open [influxdb console] (http://localhost:8086/)
    1. If prompted for user creds then type admin/passw0rd
    2. If prompted with user creation form then please fill below details
